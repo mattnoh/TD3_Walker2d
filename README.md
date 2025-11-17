@@ -11,11 +11,10 @@ This project implements TD3 reinforcement learning to train a 2D bipedal walker 
 
 ## Features
 
-- 🚀 Optimized TD3 implementation with experience replay
-- 📊 Comprehensive logging with WandB integration
-- 🎥 Video recording and frame capture utilities
-- 📈 Detailed evaluation metrics for both velocity and gait quality
-- 🔧 Modular reward shaping architecture
+- TD3 implementation with experience replay
+- Comprehensive logging with WandB integration
+- Video recording and frame capture utilities
+
 
 ## Requirements
 
@@ -165,84 +164,4 @@ Examples:
 - `models/speed/seed_42_best.pth`
 - `models/gait/seed_123_final.pth`
 
-## Output Examples
-
-**Training Output:**
 ```
-Episode 500/1000 | Reward: 2847.23 | Steps: 1000 | MaxVel: 4.52 | 
-MinSust: 4.12 | AvgSust: 4.28 | GaitQ: 0.723
-```
-
-**Evaluation Summary:**
-```
-==============================================================
-COMPREHENSIVE PERFORMANCE SUMMARY
-==============================================================
-Training Type: speed_walking
-Model: models/speed/seed_42_best.pth
-
-BASE METRICS:
-  Mean Reward: 2847.23 ± 145.67
-  Mean Steps: 1000.0 ± 0.0
-
-VELOCITY METRICS:
-  Mean Max Velocity: 4.52 ± 0.12
-  Mean Min Sustained Velocity: 4.12 ± 0.08
-==============================================================
-```
-
-## Tips
-
-1. **For fastest training**: Use `speed_walking` configuration
-2. **For natural-looking gaits**: Use `gait_walking` configuration
-3. **Hyperparameter tuning**: Adjust reward weights in respective `utils_*.py` files
-4. **Multiple seeds**: Modify `seed` in `config.py` for reproducibility experiments
-5. **Monitor training**: Check WandB dashboard for live metrics
-
-## Algorithm Details
-
-This implementation uses TD3 with:
-- Twin critic networks to reduce overestimation
-- Delayed policy updates (every 2 critic steps)
-- Target policy smoothing with clipped noise
-- Polyak averaging for target network updates
-- Experience replay with 1M capacity buffer
-- Layer normalization for training stability
-
-## Citation
-
-If you use this code in your research, please cite:
-
-```bibtex
-@article{fujimoto2018addressing,
-  title={Addressing function approximation error in actor-critic methods},
-  author={Fujimoto, Scott and Hoof, Herke and Meger, David},
-  journal={International Conference on Machine Learning},
-  year={2018}
-}
-```
-
-## License
-
-MIT License - feel free to use and modify for your research and projects.
-
-## Troubleshooting
-
-**Issue: "No module named 'mujoco'"**
-- Solution: `pip install gymnasium[mujoco]`
-
-**Issue: Training is unstable**
-- Try reducing learning rates in `config.py`
-- Increase warmup steps
-- Check reward scaling in `utils_*.py`
-
-**Issue: Videos not recording**
-- Ensure `ffmpeg` is installed: `apt-get install ffmpeg` (Linux) or `brew install ffmpeg` (Mac)
-
-**Issue: Model not loading**
-- Verify model path is correct
-- Check that training_type matches the model's training configuration
-
-## Contributing
-
-Contributions are welcome! Please open an issue or submit a pull request.
