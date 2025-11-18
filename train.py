@@ -69,9 +69,7 @@ def train_td3(
     best_metric = -float('inf')
     episode_rewards_window = []
     
-    # For speed_walking, track min sustained velocity history
     min_sustained_velocity_window = []
-    # For gait_walking, track gait quality
     gait_quality_window = []
     
     print(f"Starting training for {config['max_episodes']} episodes...")
@@ -83,14 +81,9 @@ def train_td3(
         episode_shaped_reward = 0
         episode_steps = 0
         episode_actions = []
-        
-        # Initialize tracking variables based on training type
-        velocities = []  # Always track velocities for both types
-        gait_tracker = GaitTracker()  # Always track gait metrics for logging
-        
-        # NOTE: For speed_walking, gait metrics are ONLY for logging/comparison
-        # They are NOT used in reward shaping during training
-        
+        velocities = []  
+        gait_tracker = GaitTracker()
+                
         for step in range(config['max_steps']):
             # Select action
             if total_steps < config['warmup_steps']:
@@ -112,12 +105,10 @@ def train_td3(
             
             # Compute shaped reward based on training type
             if training_type == 'speed_walking':
-                # Speed walking: ONLY uses velocity-based rewards
                 shaped_reward = compute_velocity_reward(
                     base_reward, velocities, current_velocity, episode_steps, config
                 )
             else:  # gait_walking
-                # Gait walking: Uses velocity + gait quality rewards
                 shaped_reward = compute_gait_reward(
                     base_reward, state, gait_tracker, velocities, config, episode_steps
                 )
@@ -201,8 +192,6 @@ def train_td3(
                 if len(min_sustained_velocity_window) > 100:
                     min_sustained_velocity_window.pop(0)
             
-            # IMPORTANT: Add gait metrics ONLY for comparison/logging
-            # These are NOT used in the training reward function for speed_walking
             episode_metrics.update({
                 'comparison/gait_quality': gait_metrics.get('gait_quality', 0),
                 'comparison/antiphase_score': gait_metrics.get('antiphase_score', 0),
@@ -281,10 +270,7 @@ def train_td3(
         agent.save(model_path)
         print(f"\nFinal model saved to: {model_path}")
     
-    # Print final statistics
     logger.print_statistics()
-        
-    # Finish logging
     logger.finish()
     
     print(f"\n{'='*60}")
@@ -310,7 +296,6 @@ def main():
     
     args = parser.parse_args()
     
-    # Create base directories (the seed-specific ones will be created automatically)
     os.makedirs('models/speed', exist_ok=True)
     os.makedirs('models/gait', exist_ok=True)
     

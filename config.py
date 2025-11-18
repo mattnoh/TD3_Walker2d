@@ -32,13 +32,13 @@ def get_config(training_type='speed_walking'):
     random_seed = int(time.time() * 1000) % (2**32)
     
     base_config = {
-        # Training parameters - KEEP YOUR SUCCESSFUL SETTINGS
+        # Training parameters
         'seed': random_seed,
         'max_episodes': 3000,
         'max_steps': 1000,
         'warmup_steps': 10000,
         
-        # TD3 hyperparameters - KEEP YOUR SUCCESSFUL SETTINGS
+        # TD3 hyperparameters
         'buffer_size': 1_000_000,
         'batch_size': 256,
         'gamma': 0.99,
@@ -49,10 +49,10 @@ def get_config(training_type='speed_walking'):
         'noise_clip': 0.5,
         'policy_freq': 2,
         
-        # Exploration parameters - MODIFIED FOR MORE DIVERSITY
-        'exploration_noise': 0.15,        # Slightly increased from 0.1
-        'exploration_noise_decay': 0.9998, # Slower decay to explore longer
-        'min_exploration_noise': 0.05,     # Keep more exploration at end
+        # Exploration parameters
+        'exploration_noise': 0.15,
+        'exploration_noise_decay': 0.9998,
+        'min_exploration_noise': 0.05,
         
         # Logging parameters
         'log_interval': 10,
@@ -66,25 +66,25 @@ def get_config(training_type='speed_walking'):
     # Training type specific configurations
     if training_type == 'speed_walking':
         speed_config = {
-            # Reward shaping parameters - OPTIMIZED FOR KNEE MOVEMENT
-            'velocity_weight': 2.0,        # Slightly increased from 1.5
-            'consistency_weight': 0.3,     # Reduced from 0.5 to allow more variation
-            'sustained_velocity_window': 150,  # Longer window for sustained speed
-            'sustained_velocity_bonus': 12.0,  # Slightly increased
+            # Reward shaping parameters
+            'velocity_weight': 2.0,
+            'consistency_weight': 0.3,
+            'sustained_velocity_window': 150,
+            'sustained_velocity_bonus': 12.0,
         }
         return {**base_config, **speed_config}
     
     elif training_type == 'gait_walking':
         gait_config = {
             # Velocity parameters
-            'velocity_weight': 2.0,        # Same as speed_walking for fair comparison
-            'consistency_weight': 0.3,     # Same as speed_walking
+            'velocity_weight': 2.0,
+            'consistency_weight': 0.3,
             'sustained_velocity_window': 150,
             'sustained_velocity_bonus': 12.0,
             
             # Gait quality parameters
-            'rom_weight': 1.5,         # Moderate reward for joint movement
-            'antiphase_weight': 2.0,   # Reward for alternating legs
+            'rom_weight': 1.5,
+            'antiphase_weight': 2.0,
             'periodicity_weight': 1.5, # Reward for rhythmic gait
         }
         return {**base_config, **gait_config}
