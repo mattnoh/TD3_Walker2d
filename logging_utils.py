@@ -5,7 +5,6 @@ import numpy as np
 import os
 from collections import defaultdict
 
-# Try to import wandb, but make it optional
 try:
     import wandb
     WANDB_AVAILABLE = True

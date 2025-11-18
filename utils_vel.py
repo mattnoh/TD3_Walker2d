@@ -39,9 +39,7 @@ def compute_velocity_reward(base_reward, velocities, current_velocity, episode_s
         # Add bonuses
         # shaped_reward += min_velocity_bonus + mean_velocity_bonus + consistency_bonus
         shaped_reward += min_velocity_bonus + mean_velocity_bonus
-
-        # Peak performance bonus (encourages breaking plateaus)
-        if min_velocity > 3.5 and mean_velocity > 4.0:  # Only when performing well
+        if min_velocity > 3.5 and mean_velocity > 4.0: 
             peak_bonus = (min_velocity - 3.5) * velocity_weight * 2.0
             shaped_reward += peak_bonus
     
@@ -55,7 +53,7 @@ def compute_velocity_reward(base_reward, velocities, current_velocity, episode_s
         
         # High-performance completion bonus
         if min_1000_velocity > 4.0:
-            completion_bonus *= 1.5  #
+            completion_bonus *= 1.5 
         
         shaped_reward += completion_bonus
     

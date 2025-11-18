@@ -58,8 +58,6 @@ class GaitTracker:
         search_start = center - search_range
         search_end = center + search_range
         
-        # For walking, we want NEGATIVE correlation at zero lag (legs doing opposite)
-        # and POSITIVE correlation at half-cycle lag
         zero_lag_corr = correlation[center]
         
         # Find best negative correlation (anti-phase)
